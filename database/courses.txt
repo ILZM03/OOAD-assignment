@@ -1,0 +1,11 @@
+M001,Foundation in Information Technology,1 year,1,6500
+U001,Diploma in Information Technology,2 years,1,24500
+U002,Bachelor of Computer Science (Hons.) in Software Engineering,3 years,2,62250
+U003, Bachelor of Computer Science (Hons.) in Game Development,3 years,2,62250
+U004, Bachelor of Computer Science (Hons.) in Data Science,3 years,2,62250
+U005, Bachelor of Computer Science (Hons.) Cybersecurity,3 years,2,62250
+U006, Bachelor of Information Technology (Hons.) in Information Systems,3 years,2,62250
+U007, Bachelor of Information Technology (Hons.) in Data Communication and Networking,3 years,2,62250
+U008, Bachelor of Information Technology (Hons.) Business Intelligence and Analytics,3 years,2,62250
+U009, Bachelor of Computer Science (Hons.) Artificial Intelligence,3 years,2,62250
+U010, Bachelor of Information Technology (Hons.) Security Technology,3 years,2,62250
