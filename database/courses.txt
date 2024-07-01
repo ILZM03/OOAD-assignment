@@ -9,3 +9,4 @@ U007, Bachelor of Information Technology (Hons.) in Data Communication and Netwo
 U008, Bachelor of Information Technology (Hons.) Business Intelligence and Analytics,3 years,2,62250
 U009, Bachelor of Computer Science (Hons.) Artificial Intelligence,3 years,2,62250
 U010, Bachelor of Information Technology (Hons.) Security Technology,3 years,2,62250
+U011, Bachelor of Information Technology (Hons.) Security Technology,3 years,2,62250
