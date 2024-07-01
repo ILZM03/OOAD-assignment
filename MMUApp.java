@@ -3,10 +3,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class MMUApp extends JFrame {
 
-    private JPanel mainPanel;
-    private CardLayout cardLayout;
+public class MMUApp extends JFrame {
 
     public MMUApp() {
         setTitle("Course Enrollment Calculator");
@@ -14,47 +12,35 @@ public class MMUApp extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
-        // Initialize CardLayout and main panel
-        cardLayout = new CardLayout();
-        mainPanel = new JPanel(cardLayout);
+        // Create the main panel with a GridLayout
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new GridLayout(3, 1)); // 3 rows, 1 column
 
-        // Create and add the home panel with buttons
-        JPanel homePanel = new JPanel();
-        homePanel.setLayout(new GridLayout(1, 2, 10, 10)); // 1 row, 2 columns, 10px gap
+        // Create panels for each level
+        JPanel level1Panel = createLevelPanel("Level 1");
+        JPanel level2Panel = createLevelPanel("Level 2");
+        JPanel level3Panel = createLevelPanel("Level 3");
 
-        JButton addCourseButton = new JButton("Add Course");
-        addCourseButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                cardLayout.show(mainPanel, "AddCourse");
-            }
-        });
-
-        JButton editPromoButton = new JButton("Edit Promo");
-        editPromoButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                cardLayout.show(mainPanel, "EditPromo");
-            }
-        });
-
-        homePanel.add(addCourseButton);
-        homePanel.add(editPromoButton);
-
-        // Create instances of AddCourse and EditPromo panels
-        AddCourse addCoursePanel = new AddCourse();
-        EditPromo editPromoPanel = new EditPromo();
-
-        // Add panels to the main panel with CardLayout
-        mainPanel.add(homePanel, "Home");
-        mainPanel.add(addCoursePanel, "AddCourse");
-        mainPanel.add(editPromoPanel, "EditPromo");
-
-        // Show the home panel initially
-        cardLayout.show(mainPanel, "Home");
+        // Add the level panels to the main panel
+        mainPanel.add(level1Panel);
+        mainPanel.add(level2Panel);
+        mainPanel.add(level3Panel);
 
         // Add the main panel to the frame
         add(mainPanel, BorderLayout.CENTER);
+    }
+
+    private JPanel createLevelPanel(String levelName) {
+        JPanel panel = new JPanel();
+        panel.setBorder(BorderFactory.createTitledBorder(levelName));
+        panel.setLayout(new BorderLayout());
+
+        // Placeholder label for now
+        JLabel placeholderLabel = new JLabel("Subjects will be added here.");
+        placeholderLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        panel.add(placeholderLabel, BorderLayout.CENTER);
+
+        return panel;
     }
 
     public static void main(String[] args) {
