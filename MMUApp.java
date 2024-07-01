@@ -1,7 +1,7 @@
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,10 +10,31 @@ public class MMUApp extends JFrame {
 
     public MMUApp() {
         setTitle("Course Enrollment Calculator");
-        setSize(800, 600);
+        setSize(800, 620); // Increase height to fit the ribbon
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
         setResizable(false); // Make the window non-resizable
+
+        // Create the ribbon panel
+        JPanel ribbonPanel = new JPanel();
+        ribbonPanel.setLayout(new BorderLayout());
+        ribbonPanel.setPreferredSize(new Dimension(800, 20));
+        ribbonPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+
+        // Create the "Next Page" button
+        JButton nextPageButton = new JButton("Next Page");
+        nextPageButton.setPreferredSize(new Dimension(100, 20));
+        nextPageButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Open FinancialPackages.java
+                new FinancialPackages().setVisible(true);
+                dispose();
+            }
+        });
+
+        // Add the button to the ribbon panel
+        ribbonPanel.add(nextPageButton, BorderLayout.EAST);
 
         // Create the main panel with a BoxLayout
         JPanel mainPanel = new JPanel();
@@ -32,6 +53,9 @@ public class MMUApp extends JFrame {
         // Add some vertical glue to ensure spacing
         mainPanel.add(Box.createVerticalGlue());
 
+        // Add the ribbon panel to the frame
+        add(ribbonPanel, BorderLayout.NORTH);
+
         // Add the main panel to the frame
         add(mainPanel, BorderLayout.CENTER);
     }
@@ -42,60 +66,35 @@ public class MMUApp extends JFrame {
         panel.setLayout(new BorderLayout());
         panel.setPreferredSize(new Dimension(800, 200)); // Fixed size for each panel
 
-        // Create a container panel with a vertical BoxLayout to hold course cards
-        JPanel courseContainer = new JPanel();
-        courseContainer.setLayout(new BoxLayout(courseContainer, BoxLayout.Y_AXIS));
+        // Create a table to display the courses
+        String[] columnNames = {"Code", "Name", "Duration", "Price"};
+        String[][] data = new String[courses.size()][4];
 
-        for (Course course : courses) {
-            // Create a panel for each course to make it look like a card
-            JPanel coursePanel = new JPanel();
-            coursePanel.setLayout(new GridBagLayout());
-            coursePanel.setBorder(new LineBorder(Color.BLACK, 1, true));
-            coursePanel.setBackground(Color.WHITE);
-            coursePanel.setPreferredSize(new Dimension(750, 50)); // Fixed size for each card
-            coursePanel.setBorder(new EmptyBorder(5, 20, 5, 20)); // Add padding around the text area
-
-            // Create labels for course details
-            JLabel codeLabel = new JLabel(course.getCourseCode());
-            JLabel courseLabel = new JLabel(course.getCourseName());
-            JLabel durationLabel = new JLabel(course.getCourseDuration());
-            JLabel priceLabel = new JLabel("RM" + course.getCourseFee());
-
-            // Define GridBagConstraints
-            GridBagConstraints gbc = new GridBagConstraints();
-            gbc.insets = new Insets(0, 10, 0, 10);
-            gbc.anchor = GridBagConstraints.WEST;
-
-            // Add labels to course panel with separators
-            gbc.gridx = 0;
-            coursePanel.add(codeLabel, gbc);
-
-            gbc.gridx = 1;
-            coursePanel.add(new JSeparator(SwingConstants.VERTICAL), gbc);
-
-            gbc.gridx = 2;
-            coursePanel.add(courseLabel, gbc);
-
-            gbc.gridx = 3;
-            coursePanel.add(new JSeparator(SwingConstants.VERTICAL), gbc);
-
-            gbc.gridx = 4;
-            coursePanel.add(durationLabel, gbc);
-
-            gbc.gridx = 5;
-            coursePanel.add(new JSeparator(SwingConstants.VERTICAL), gbc);
-
-            gbc.gridx = 6;
-            coursePanel.add(priceLabel, gbc);
-
-            courseContainer.add(coursePanel);
-            courseContainer.add(Box.createVerticalStrut(5)); // Reduce space between cards
+        for (int i = 0; i < courses.size(); i++) {
+            Course course = courses.get(i);
+            data[i][0] = course.getCourseCode();
+            data[i][1] = course.getCourseName();
+            data[i][2] = course.getCourseDuration();
+            data[i][3] = "RM" + course.getCourseFee();
         }
 
-        // Create a scroll pane for the course container
-        JScrollPane scrollPane = new JScrollPane(courseContainer);
+        JTable courseTable = new JTable(data, columnNames);
+        courseTable.setFillsViewportHeight(true);
+        courseTable.getTableHeader().setReorderingAllowed(false); // Disable column reordering
+
+        // Set column widths
+        courseTable.getColumnModel().getColumn(0).setPreferredWidth(100); // Code column
+
+        courseTable.getColumnModel().getColumn(1).setPreferredWidth(300); // Name column
+
+        courseTable.getColumnModel().getColumn(2).setPreferredWidth(150); // Duration column
+
+        courseTable.getColumnModel().getColumn(3).setPreferredWidth(150); // Price column
+
+        // Create a scroll pane for the table
+        JScrollPane scrollPane = new JScrollPane(courseTable);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
         // Add the scroll pane to the main level panel
         panel.add(scrollPane, BorderLayout.CENTER);
