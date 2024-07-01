@@ -1,8 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 
 public class MMUApp extends JFrame {
 
@@ -14,7 +11,7 @@ public class MMUApp extends JFrame {
 
         // Create the main panel with a GridLayout
         JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new GridLayout(3, 1)); // 3 rows, 1 column
+        mainPanel.setLayout(new GridLayout(1, 3)); // 1 row, 3 columns
 
         // Create panels for each level
         JPanel level1Panel = createLevelPanel("Level 1");
