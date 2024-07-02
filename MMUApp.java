@@ -1,36 +1,38 @@
 import javax.swing.*;
 import javax.swing.table.*;
+
+import java.awt.event.*;
+
 import java.awt.*;
 import java.io.*;
 import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
-public class MMUApp extends JFrame {
+public class MMUApp extends JFrame implements ActionListener{
+    private JButton prevPageButton, nextPageButton;
+    
 
     public MMUApp() {
         // Clear the cache file at the start
         clearCacheFile();
-
-        setTitle("Course Enrollment Calculator");
-        setSize(800, 620); // Increase height to fit the ribbon
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new BorderLayout());
-        setResizable(false); // Make the window non-resizable
 
         // Create the ribbon panel
         JPanel ribbonPanel = new JPanel(new BorderLayout());
         ribbonPanel.setPreferredSize(new Dimension(800, 20));
         ribbonPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
+        // Create the "Previous Page" button
+        prevPageButton = new JButton("Previous Page");
+        prevPageButton.setPreferredSize(new Dimension(120, 25));
+        prevPageButton.addActionListener(this);
         // Create the "Next Page" button
-        JButton nextPageButton = new JButton("Next Page");
-        nextPageButton.setPreferredSize(new Dimension(100, 20));
-        nextPageButton.addActionListener(e -> {
-            getContentPane().removeAll();
-            getContentPane().add(new FinancialPackages());
-            revalidate();
-            repaint();
-        });
+        nextPageButton = new JButton("Next Page");
+        nextPageButton.setPreferredSize(new Dimension(120, 25));
+        nextPageButton.addActionListener(this); 
+
+    
+        ribbonPanel.add(prevPageButton, BorderLayout.WEST);
         ribbonPanel.add(nextPageButton, BorderLayout.EAST);
         add(ribbonPanel, BorderLayout.NORTH);
 
@@ -50,6 +52,31 @@ public class MMUApp extends JFrame {
         add(mainPanel, BorderLayout.CENTER);
 
         setVisible(true);
+
+        
+    }
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        // Handle actions if needed
+        if(e.getSource()==prevPageButton){
+        Home obj = new Home();
+                    obj.pack();
+                    obj.setVisible(true);
+                    obj.setTitle("Home");
+                    obj.setSize(800, 650);
+                    obj.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                    dispose();
+        }
+        
+        else if(e.getSource()==nextPageButton){
+           FinancialPackages obj = new FinancialPackages();
+            obj.pack();
+            obj.setVisible(true);
+            obj.setTitle("Financial Packages");
+            obj.setSize(800, 650);
+            obj.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            dispose();
+        }
     }
 
     private void clearCacheFile() {
@@ -143,7 +170,7 @@ public class MMUApp extends JFrame {
     private List<Course> getCoursesByLevel(int level) {
         return getCoursesFromFile("database/courses.txt").stream()
                 .filter(course -> course.getSeniorityLevel() == level)
-                .toList();
+                .collect(Collectors.toList());
     }
 
     private List<Course> getCoursesFromFile(String fileName) {
@@ -176,6 +203,8 @@ public class MMUApp extends JFrame {
             e.printStackTrace();
         }
     }
+
+   
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(MMUApp::new);
