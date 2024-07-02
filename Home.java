@@ -1,21 +1,34 @@
 import java.awt.*;
-import java.io.File;
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.*;
 
 public class Home extends JFrame implements ActionListener {
     private JLabel l1;
     private JButton b1,b2;
-    
+    public CardLayout cardLayout = new CardLayout();
+    public JPanel mainPanel, homPanel;
+   
     public Home() {
+       
+        // Clear the cache file at the start
+       clearCacheFile();
+
+        cardLayout = new CardLayout();
+        mainPanel = new JPanel(cardLayout);
+
+        homPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+
         Font f1 = new Font("Arial", Font.BOLD, 20);
         Font f2 = new Font("Arial", Font.ITALIC, 15);
         
 
         l1 = new JLabel("Welcome to the MMU Course Enrollment Manager");
         l1.setFont(f1);
+        homPanel.add(l1, gbc);
         
         b1 = new JButton("Financial Packages");
         b2 = new JButton("Course Manager");
@@ -29,77 +42,65 @@ public class Home extends JFrame implements ActionListener {
         b1.setPreferredSize(new Dimension(200,50));
         b2.setPreferredSize(new Dimension(200, 50));
 
-        //Panel 1
-        JPanel p1 = new JPanel(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10);
-        p1.add(l1, gbc);
-        p1.setBackground(Color.WHITE);
-
-        //Panel 2
-        JPanel p2 = new JPanel(new GridBagLayout());
-        gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10);
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        p2.add(b1, gbc);
-        gbc.insets = new Insets(10, 10, 10, 10);
-        gbc.gridx = 0;
         gbc.gridy = 1;
-        p2.add(b2, gbc);
-        p2.setBackground(Color.WHITE);
+        homPanel.add(b1, gbc);
+        gbc.gridy = 2;
+        homPanel.add(b2, gbc);
 
-        JPanel p3 = new JPanel(new GridBagLayout());
-        gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10);
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        p3.add(p1, gbc);
-        gbc.insets = new Insets(10, 10, 10, 10);
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        p3.add(p2, gbc);
-        p3.setBackground(Color.WHITE);
-
-        //Set Border Layout
-        add(p3, BorderLayout.CENTER);
+        homPanel.setBackground(Color.WHITE);
+        mainPanel.add(homPanel, "Home");
         
         //Register Object
         b1.addActionListener(this);
         b2.addActionListener(this);
+
+        add(mainPanel);
+        setTitle("Home");
+        setSize(800, 650);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setVisible(true);
     }
     @Override
     public void actionPerformed(ActionEvent e){
         if(e.getSource()==b1){
-            dispose(); // Close the current frame if needed
-            FinancialPackages obj = new FinancialPackages();
-            obj.pack();
-            obj.setVisible(true);
-            obj.setTitle("Financial Packages");
-            obj.setSize(800, 650);
-            obj.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             
+            showFinancialPanel();
         }
         else if(e.getSource()==b2){
-            dispose(); // Close the current frame if needed
-            MMUApp obj = new MMUApp();
-            obj.pack();
-            obj.setVisible(true);
-            obj.setTitle("Course Manager");
-            obj.setSize(800, 650);
-            obj.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             
+            showMMUPanel();
         }
         else
             System.out.println("Invalid Button");
 }
 
+private void clearCacheFile() {
+    try (BufferedWriter writer = new BufferedWriter(new FileWriter("database/cache.txt"))) {
+            writer.write(""); // Write an empty string to clear the file
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+public void showMainPanel(){
+    cardLayout.show(mainPanel, "Home");
+}
+
+public void showMMUPanel(){
+    mainPanel.add(new MMUApp(this), "MMUApp");
+    cardLayout.show(mainPanel, "MMUApp");
+}
+
+public void showFinancialPanel(){
+    mainPanel.add(new FinancialPackages(this), "FinancialPackages");
+    cardLayout.show(mainPanel, "FinancialPackages");
+}
+
+public void showSelectedPanel(){
+    mainPanel.add(new SelectedCourse(this), "SelectedCourse");
+    cardLayout.show(mainPanel, "SelectedCourse");
+}   
  public static void main(String[] args) {
-    Home obj = new Home();
-    obj.pack();
-    obj.setVisible(true);
-    obj.setTitle("Home");
-    obj.setSize(800, 650);
-    obj.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    new Home();
     }
 }

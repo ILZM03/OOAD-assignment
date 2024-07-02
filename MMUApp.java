@@ -1,3 +1,4 @@
+import javax.smartcardio.Card;
 import javax.swing.*;
 import javax.swing.table.*;
 
@@ -9,13 +10,16 @@ import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class MMUApp extends JFrame implements ActionListener{
-    private JButton prevPageButton, nextPageButton;
-    
+public class MMUApp extends JPanel {
 
-    public MMUApp() {
-        // Clear the cache file at the start
-        clearCacheFile();
+    CardLayout cardLayout;
+    
+    public MMUApp(Home home) {
+        
+
+        setLayout(new BorderLayout());
+        cardLayout = new CardLayout();
+
 
         // Create the ribbon panel
         JPanel ribbonPanel = new JPanel(new BorderLayout());
@@ -23,13 +27,25 @@ public class MMUApp extends JFrame implements ActionListener{
         ribbonPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         // Create the "Previous Page" button
-        prevPageButton = new JButton("Previous Page");
+        JButton prevPageButton = new JButton("Previous Page");
         prevPageButton.setPreferredSize(new Dimension(120, 25));
-        prevPageButton.addActionListener(this);
+        prevPageButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                home.showMainPanel();
+            }
+        
+        });
         // Create the "Next Page" button
-        nextPageButton = new JButton("Next Page");
+        JButton nextPageButton = new JButton("Next Page");
         nextPageButton.setPreferredSize(new Dimension(120, 25));
-        nextPageButton.addActionListener(this); 
+        nextPageButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                home.showSelectedPanel();
+        
+            }
+        });
 
     
         ribbonPanel.add(prevPageButton, BorderLayout.WEST);
@@ -51,41 +67,16 @@ public class MMUApp extends JFrame implements ActionListener{
         // Add the main panel to the frame
         add(mainPanel, BorderLayout.CENTER);
 
-        setVisible(true);
-
         
     }
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        // Handle actions if needed
-        if(e.getSource()==prevPageButton){
-        Home obj = new Home();
-                    obj.pack();
-                    obj.setVisible(true);
-                    obj.setTitle("Home");
-                    obj.setSize(800, 650);
-                    obj.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                    dispose();
-        }
-        
-        else if(e.getSource()==nextPageButton){
-           FinancialPackages obj = new FinancialPackages();
-            obj.pack();
-            obj.setVisible(true);
-            obj.setTitle("Financial Packages");
-            obj.setSize(800, 650);
-            obj.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            dispose();
-        }
-    }
 
-    private void clearCacheFile() {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("database/cache.txt"))) {
-            writer.write(""); // Write an empty string to clear the file
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+    // private void clearCacheFile() {
+    //     try (BufferedWriter writer = new BufferedWriter(new FileWriter("database/cache.txt"))) {
+    //         writer.write(""); // Write an empty string to clear the file
+    //     } catch (IOException e) {
+    //         e.printStackTrace();
+    //     }
+    // }
 
     private JPanel createLevelPanel(String levelName, List<Course> courses) {
         JPanel panel = new JPanel(new BorderLayout());
@@ -205,8 +196,4 @@ public class MMUApp extends JFrame implements ActionListener{
     }
 
    
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(MMUApp::new);
-    }
 }

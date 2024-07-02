@@ -3,9 +3,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.*;
 
-public class FinancialPackages extends JFrame {
+public class FinancialPackages extends JPanel {
 
-    public FinancialPackages() {
+    public FinancialPackages(Home home) {
         setLayout(new BorderLayout());
     
     // Create the ribbon panel
@@ -20,14 +20,8 @@ public class FinancialPackages extends JFrame {
      prevPageButton.addActionListener(new ActionListener() {
      @Override
      public void actionPerformed(ActionEvent e) {
-     // Open HOME.java
-      Home obj = new Home();
-        obj.pack();
-        obj.setVisible(true);
-        obj.setTitle("Home");
-        obj.setSize(800, 650);
-        obj.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        dispose();
+     home.showMainPanel();
+        
     }
 });
         // Add your components here
