@@ -1,14 +1,16 @@
 import javax.swing.*;
+import javax.swing.table.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.*;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
 
 public class MMUApp extends JFrame {
 
     public MMUApp() {
+        // Clear the cache file at the start
+        clearCacheFile();
+
         setTitle("Course Enrollment Calculator");
         setSize(800, 620); // Increase height to fit the ribbon
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -16,59 +18,56 @@ public class MMUApp extends JFrame {
         setResizable(false); // Make the window non-resizable
 
         // Create the ribbon panel
-        JPanel ribbonPanel = new JPanel();
-        ribbonPanel.setLayout(new BorderLayout());
+        JPanel ribbonPanel = new JPanel(new BorderLayout());
         ribbonPanel.setPreferredSize(new Dimension(800, 20));
         ribbonPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         // Create the "Next Page" button
         JButton nextPageButton = new JButton("Next Page");
         nextPageButton.setPreferredSize(new Dimension(100, 20));
-        nextPageButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Open FinancialPackages.java
-                new FinancialPackages().setVisible(true);
-                dispose();
-            }
+        nextPageButton.addActionListener(e -> {
+            getContentPane().removeAll();
+            getContentPane().add(new FinancialPackages());
+            revalidate();
+            repaint();
         });
-
-        // Add the button to the ribbon panel
         ribbonPanel.add(nextPageButton, BorderLayout.EAST);
+        add(ribbonPanel, BorderLayout.NORTH);
 
         // Create the main panel with a BoxLayout
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS)); // Vertical layout
 
         // Create panels for each level
-        JPanel level1Panel = createLevelPanel("Level 1: Remedial courses, Matriculation", getCoursesByLevel(1));
-        JPanel level2Panel = createLevelPanel("Level 2: Undergraduate", getCoursesByLevel(2));
-        JPanel level3Panel = createLevelPanel("Level 3: Postgraduate", getCoursesByLevel(3));
+        mainPanel.add(createLevelPanel("Level 1: Remedial courses, Matriculation", getCoursesByLevel(1)));
+        mainPanel.add(createLevelPanel("Level 2: Undergraduate", getCoursesByLevel(2)));
+        mainPanel.add(createLevelPanel("Level 3: Postgraduate", getCoursesByLevel(3)));
 
-        // Add the level panels to the main panel
-        mainPanel.add(level1Panel);
-        mainPanel.add(level2Panel);
-        mainPanel.add(level3Panel);
-
-        // Add some vertical glue to ensure spacing
+        // Add vertical glue for spacing
         mainPanel.add(Box.createVerticalGlue());
-
-        // Add the ribbon panel to the frame
-        add(ribbonPanel, BorderLayout.NORTH);
 
         // Add the main panel to the frame
         add(mainPanel, BorderLayout.CENTER);
+
+        setVisible(true);
+    }
+
+    private void clearCacheFile() {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("database/cache.txt"))) {
+            writer.write(""); // Write an empty string to clear the file
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private JPanel createLevelPanel(String levelName, List<Course> courses) {
-        JPanel panel = new JPanel();
+        JPanel panel = new JPanel(new BorderLayout());
         panel.setBorder(BorderFactory.createTitledBorder(levelName));
-        panel.setLayout(new BorderLayout());
         panel.setPreferredSize(new Dimension(800, 200)); // Fixed size for each panel
 
         // Create a table to display the courses
-        String[] columnNames = {"Code", "Name", "Duration", "Price"};
-        String[][] data = new String[courses.size()][4];
+        String[] columnNames = {"Code", "Name", "Duration", "Price", "Add Course"};
+        Object[][] data = new Object[courses.size()][5];
 
         for (int i = 0; i < courses.size(); i++) {
             Course course = courses.get(i);
@@ -76,20 +75,35 @@ public class MMUApp extends JFrame {
             data[i][1] = course.getCourseName();
             data[i][2] = course.getCourseDuration();
             data[i][3] = "RM" + course.getCourseFee();
+            data[i][4] = "Add Course"; // Placeholder text for the button
         }
 
-        JTable courseTable = new JTable(data, columnNames);
+        JTable courseTable = new JTable(new DefaultTableModel(data, columnNames)) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return column == 4; // Only the "Add Course" column is editable
+            }
+
+            @Override
+            public TableCellRenderer getCellRenderer(int row, int column) {
+                return column == 4 ? new ButtonRenderer() : super.getCellRenderer(row, column);
+            }
+
+            @Override
+            public TableCellEditor getCellEditor(int row, int column) {
+                return column == 4 ? new ButtonEditor(new JCheckBox(), courses.get(row), MMUApp.this) : super.getCellEditor(row, column);
+            }
+        };
+
         courseTable.setFillsViewportHeight(true);
         courseTable.getTableHeader().setReorderingAllowed(false); // Disable column reordering
 
         // Set column widths
         courseTable.getColumnModel().getColumn(0).setPreferredWidth(100); // Code column
-
         courseTable.getColumnModel().getColumn(1).setPreferredWidth(300); // Name column
-
-        courseTable.getColumnModel().getColumn(2).setPreferredWidth(150); // Duration column
-
-        courseTable.getColumnModel().getColumn(3).setPreferredWidth(150); // Price column
+        courseTable.getColumnModel().getColumn(2).setPreferredWidth(80); // Duration column
+        courseTable.getColumnModel().getColumn(3).setPreferredWidth(80); // Price column
+        courseTable.getColumnModel().getColumn(4).setPreferredWidth(100); // Add Course column
 
         // Create a scroll pane for the table
         JScrollPane scrollPane = new JScrollPane(courseTable);
@@ -102,13 +116,43 @@ public class MMUApp extends JFrame {
         return panel;
     }
 
+    public void addCourseToCache(Course course) {
+        List<Course> cacheCourses = getCoursesFromFile("database/cache.txt");
+
+        // Check for existing course with the same SeniorityLevel
+        Course existingCourse = null;
+        for (Course c : cacheCourses) {
+            if (c.getSeniorityLevel() == course.getSeniorityLevel()) {
+                existingCourse = c;
+                break;
+            }
+        }
+
+        // Remove the existing course if found
+        if (existingCourse != null) {
+            cacheCourses.remove(existingCourse);
+            System.out.println("Removed: " + existingCourse.getCourseName() + " (Seniority Level: " + existingCourse.getSeniorityLevel() + ")");
+        }
+
+        // Add the new course to the cache
+        cacheCourses.add(course);
+        writeCoursesToFile(cacheCourses, "database/cache.txt");
+        System.out.println("Added: " + course.getCourseName() + " (Seniority Level: " + course.getSeniorityLevel() + ")");
+    }
+
     private List<Course> getCoursesByLevel(int level) {
+        return getCoursesFromFile("database/courses.txt").stream()
+                .filter(course -> course.getSeniorityLevel() == level)
+                .toList();
+    }
+
+    private List<Course> getCoursesFromFile(String fileName) {
         List<Course> courses = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader("database/courses.txt"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
-                if (parts.length == 5 && Integer.parseInt(parts[3]) == level) {
+                if (parts.length == 5) {
                     courses.add(new Course(parts[0], parts[1], parts[2], Integer.parseInt(parts[3]), Double.parseDouble(parts[4])));
                 }
             }
@@ -118,13 +162,22 @@ public class MMUApp extends JFrame {
         return courses;
     }
 
-    public static void main(String[] args) {
-        // Create and display the main window
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new MMUApp().setVisible(true);
+    private void writeCoursesToFile(List<Course> courses, String fileName) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+            for (Course course : courses) {
+                writer.write(course.getCourseCode() + "," +
+                        course.getCourseName() + "," +
+                        course.getCourseDuration() + "," +
+                        course.getSeniorityLevel() + "," +
+                        course.getCourseFee());
+                writer.newLine();
             }
-        });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(MMUApp::new);
     }
 }
