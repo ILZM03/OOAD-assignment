@@ -1,4 +1,3 @@
-import javax.smartcardio.Card;
 import javax.swing.*;
 import javax.swing.table.*;
 

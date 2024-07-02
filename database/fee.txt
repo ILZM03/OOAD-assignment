@@ -1,2 +1,6 @@
 Mandatory,Test Fee,200
+Mandatory,Test Fee2,200
 Optional,Fee Fee, 300
+Optional,Fee 2, 100
+Optional,Fee 3, 400
+Mandatory,Test Fee3,200

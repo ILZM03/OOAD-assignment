@@ -14,6 +14,7 @@ public class Home extends JFrame implements ActionListener {
        
         // Clear the cache file at the start
        clearCacheFile();
+       clearFeeCacheFile();
 
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
@@ -82,6 +83,14 @@ private void clearCacheFile() {
         }
     }
 
+private void clearFeeCacheFile() {
+    try (BufferedWriter writer = new BufferedWriter(new FileWriter("database/feecache.txt"))) {
+            writer.write(""); // Write an empty string to clear the file
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 public void showMainPanel(){
     cardLayout.show(mainPanel, "Home");
 }
@@ -100,6 +109,11 @@ public void showSelectedPanel(){
     mainPanel.add(new SelectedCourse(this), "SelectedCourse");
     cardLayout.show(mainPanel, "SelectedCourse");
 }   
+
+public void showInvoicePanel(){
+    mainPanel.add(new FinancialPackages(this), "FinancialPackages");
+    cardLayout.show(mainPanel, "FinancialPackages");
+}
  public static void main(String[] args) {
     new Home();
     }

@@ -1,2 +1,1 @@
-M001,Foundation in Information Technology,1 year,1,6500.0
-U002,Bachelor of Computer Science (Hons.) in Software Engineering,3 years,2,62250.0
+U003, Bachelor of Computer Science (Hons.) in Game Development,3 years,2,62250.0
