@@ -11,7 +11,6 @@ public class Home extends JFrame implements ActionListener {
     public JPanel mainPanel, homPanel;
    
     public Home() {
-       
         // Clear the cache file at the start
        clearCacheFile();
        clearFeeCacheFile();
@@ -56,10 +55,11 @@ public class Home extends JFrame implements ActionListener {
         b2.addActionListener(this);
 
         add(mainPanel);
-        setTitle("Home");
-        setSize(800, 650);
+        setTitle("Course Enrollment Calculator");
+        setSize(800, 620);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
+        setResizable(false); // Make the window non-resizable
     }
     @Override
     public void actionPerformed(ActionEvent e){
