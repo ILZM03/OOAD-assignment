@@ -1,5 +1,8 @@
-M001,Foundation in Information Technology,1 year,1,6500
-U001,Diploma in Information Technology,2 years,1,24500
+F001,Foundation in Information Technology,1 year,1,6500
+D001,Diploma in Information Technology,2 years,1,24500
+M001,Matriculation Science,2 years,1,4000
+R001, English remedial course,1 year,1, 2000
+R001, Mathematics remedial course,1 year,1, 2000
 U002,Bachelor of Computer Science (Hons.) in Software Engineering,3 years,2,62250
 U003, Bachelor of Computer Science (Hons.) in Game Development,3 years,2,62250
 U004, Bachelor of Computer Science (Hons.) in Data Science,3 years,2,62250

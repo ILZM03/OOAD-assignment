@@ -135,22 +135,34 @@ public class MMUApp extends JPanel {
 
     public void addCourseToCache(Course course) {
         List<Course> cacheCourses = getCoursesFromFile("database/cache.txt");
-
+    
         // Check for existing course with the same SeniorityLevel
         Course existingCourse = null;
-        for (Course c : cacheCourses) {
-            if (c.getSeniorityLevel() == course.getSeniorityLevel()) {
-                existingCourse = c;
-                break;
+        if (course.getSeniorityLevel() != 1) {
+            for (Course c : cacheCourses) {
+                if (c.getSeniorityLevel() == course.getSeniorityLevel()) {
+                    existingCourse = c;
+                    break;
+                }
+            }
+        } else {
+            // For SeniorityLevel 1, allow remedial courses together with foundation, diploma, or matriculation courses
+            if (!course.getCourseCode().startsWith("R")) {
+                for (Course c : cacheCourses) {
+                    if (c.getSeniorityLevel() == 1 && !c.getCourseCode().startsWith("R")) {
+                        existingCourse = c;
+                        break;
+                    }
+                }
             }
         }
-
+    
         // Remove the existing course if found
         if (existingCourse != null) {
             cacheCourses.remove(existingCourse);
             System.out.println("Removed: " + existingCourse.getCourseName() + " (Seniority Level: " + existingCourse.getSeniorityLevel() + ")");
         }
-
+    
         // Add the new course to the cache
         cacheCourses.add(course);
         writeCoursesToFile(cacheCourses, "database/cache.txt");
