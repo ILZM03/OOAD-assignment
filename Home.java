@@ -111,8 +111,8 @@ public void showSelectedPanel(){
 }   
 
 public void showInvoicePanel(){
-    mainPanel.add(new FinancialPackages(this), "FinancialPackages");
-    cardLayout.show(mainPanel, "FinancialPackages");
+    mainPanel.add(new Invoice(this), "Invoice");
+    cardLayout.show(mainPanel, "Invoice");
 }
  public static void main(String[] args) {
     new Home();

@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,14 +10,17 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class SelectedCourse extends JPanel {
-
+    
     private JTable optionalFeeTable;
     public SelectedCourse(Home home) {
         setLayout(new BorderLayout());
 
         // Create the ribbon panel
         JPanel ribbonPanel = new JPanel();
-        ribbonPanel.setLayout(new BorderLayout());
+        ribbonPanel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(0, 0, 0, 0);
         ribbonPanel.setPreferredSize(new Dimension(800, 25));
         ribbonPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
@@ -29,6 +33,9 @@ public class SelectedCourse extends JPanel {
                 home.showMMUPanel();
             }
         });
+        gbc.weightx = 0.5;
+        gbc.gridx = 0;
+        ribbonPanel.add(prevPageButton, gbc);
 
         // Home Page Button
         JButton homePageButton = new JButton("Home Page");
@@ -39,6 +46,9 @@ public class SelectedCourse extends JPanel {
                 home.showMainPanel();
             }
         });
+        gbc.weightx = 0.5;
+        gbc.gridx = 1;
+        ribbonPanel.add(homePageButton, gbc);
 
         // Next Page Button
         JButton nextPageButton = new JButton("Next Page");
@@ -46,10 +56,25 @@ public class SelectedCourse extends JPanel {
         nextPageButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                addFeesToCache();
                 home.showInvoicePanel();
             }
         });
+        gbc.weightx = 0.5;
+        gbc.gridx = 3;
+        ribbonPanel.add(nextPageButton, gbc);
+
+        JButton saveButton = new JButton("Save");
+        saveButton.setPreferredSize(new Dimension(120, 25));
+        saveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                addFeesToCache();
+                JOptionPane.showMessageDialog(null, "Fees saved successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
+        gbc.weightx = 0.5;
+        gbc.gridx = 2;
+        ribbonPanel.add(saveButton, gbc);
 
         // Create the main panel 
         JPanel mainPanel = new JPanel();
@@ -64,15 +89,13 @@ public class SelectedCourse extends JPanel {
 
         // Add vertical glue for spacing
         mainPanel.add(Box.createVerticalGlue());
-
         // Add the main panel to the frame
         add(mainPanel, BorderLayout.CENTER);
-
+        
         // Add the ribbon panel to the top
         add(ribbonPanel, BorderLayout.NORTH);
-        ribbonPanel.add(homePageButton, BorderLayout.CENTER);
-        ribbonPanel.add(nextPageButton, BorderLayout.EAST);
-        ribbonPanel.add(prevPageButton, BorderLayout.WEST);
+        
+        
     }
         
 
@@ -89,7 +112,7 @@ public class SelectedCourse extends JPanel {
                 data[i][1] = course.getCourseName();
                 data[i][2] = course.getCourseDuration();
                 data[i][3] = course.getSeniorityLevel();
-                data[i][4] = "RM" + course.getCourseFee();
+                data[i][4] = "RM " + course.getCourseFee();
             }
 
             DefaultTableModel tableModel = new DefaultTableModel(data, columnNames) {
@@ -110,6 +133,10 @@ public class SelectedCourse extends JPanel {
             courseTable.getColumnModel().getColumn(3).setPreferredWidth(80); // Level column
             courseTable.getColumnModel().getColumn(4).setPreferredWidth(100); // Price column
     
+            DefaultTableCellRenderer rigRenderer = new DefaultTableCellRenderer();
+            rigRenderer.setHorizontalAlignment(SwingConstants.RIGHT);
+            courseTable.getColumnModel().getColumn(4).setCellRenderer(rigRenderer);
+        
             // Create a scroll pane for the table
             JScrollPane scrollPane = new JScrollPane(courseTable);
             scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -137,7 +164,7 @@ public class SelectedCourse extends JPanel {
                 data[i][0] = fee.getFeeType();
                 data[i][1] = fee.getFeeName();
                 data[i][2] = false;
-                data[i][3] = "RM" + fee.getFeeAmount();
+                data[i][3] = "RM " + fee.getFeeAmount();
             }
         } else {
             columnNames = new String[]{"Type", "Name", "Price"};
@@ -147,7 +174,7 @@ public class SelectedCourse extends JPanel {
                 Fee fee = fees.get(i);
                 data[i][0] = fee.getFeeType();
                 data[i][1] = fee.getFeeName();
-                data[i][2] = "RM" + fee.getFeeAmount();
+                data[i][2] = "RM " + fee.getFeeAmount();
             }
         }
 
@@ -178,11 +205,18 @@ public class SelectedCourse extends JPanel {
                 feeTable.getColumnModel().getColumn(1).setPreferredWidth(300); // Name column
                 feeTable.getColumnModel().getColumn(2).setPreferredWidth(10); // Checkbox column for optional fees
                 feeTable.getColumnModel().getColumn(3).setPreferredWidth(100); // Price column
+
+                DefaultTableCellRenderer rigRenderer = new DefaultTableCellRenderer();
+                rigRenderer.setHorizontalAlignment(SwingConstants.RIGHT);
+                feeTable.getColumnModel().getColumn(3).setCellRenderer(rigRenderer);
             }
             else {
                 feeTable.getColumnModel().getColumn(0).setPreferredWidth(100); // Type column
                 feeTable.getColumnModel().getColumn(1).setPreferredWidth(300); // Name column
                 feeTable.getColumnModel().getColumn(2).setPreferredWidth(100); // Price column
+                DefaultTableCellRenderer rigRenderer = new DefaultTableCellRenderer();
+                rigRenderer.setHorizontalAlignment(SwingConstants.RIGHT);
+                feeTable.getColumnModel().getColumn(2).setCellRenderer(rigRenderer);
             }
             
     

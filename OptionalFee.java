@@ -3,6 +3,7 @@ public class OptionalFee extends Fee {
 
     public OptionalFee(String feeType, String feeName, double feeAmount, boolean selected) {
         super(feeType, feeName, feeAmount);
+        this.isSelected = selected;
     }
 
     public boolean isSelected() {
@@ -10,5 +11,9 @@ public class OptionalFee extends Fee {
         return isSelected;
     }
 
+    public void setSelected(boolean selected){
+        this.isSelected = selected;
+        
+    }
      
 }

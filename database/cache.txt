@@ -1,1 +1,3 @@
-U003, Bachelor of Computer Science (Hons.) in Game Development,3 years,2,62250.0
+U001,Diploma in Information Technology,2 years,1,24500.0
+U006, Bachelor of Information Technology (Hons.) in Information Systems,3 years,2,62250.0
+P011, Masters of Information Technology (Hons.) Security Technology,5 years,3,82250.0
