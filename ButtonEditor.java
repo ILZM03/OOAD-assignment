@@ -7,12 +7,12 @@ public class ButtonEditor extends DefaultCellEditor {
     private JButton button;
     private Course course;
     private boolean isPushed;
-    private MMUApp mmuApp;
+    private CourseSelection CourseSelection;
 
-    public ButtonEditor(JCheckBox checkBox, Course course, MMUApp mmuApp) {
+    public ButtonEditor(JCheckBox checkBox, Course course, CourseSelection CourseSelection) {
         super(checkBox);
         this.course = course;
-        this.mmuApp = mmuApp;
+        this.CourseSelection = CourseSelection;
         button = new JButton();
         button.setOpaque(true);
         button.addActionListener(new ActionListener() {
@@ -33,7 +33,7 @@ public class ButtonEditor extends DefaultCellEditor {
     @Override
     public Object getCellEditorValue() {
         if (isPushed) {
-            mmuApp.addCourseToCache(course);
+            CourseSelection.addCourseToCache(course);
         }
         isPushed = false;
         return button.getText();

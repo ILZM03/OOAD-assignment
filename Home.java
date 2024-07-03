@@ -69,7 +69,7 @@ public class Home extends JFrame implements ActionListener {
         }
         else if(e.getSource()==b2){
             
-            showMMUPanel();
+            showCourseSelectionPanel();
         }
         else
             System.out.println("Invalid Button");
@@ -95,9 +95,9 @@ public void showMainPanel(){
     cardLayout.show(mainPanel, "Home");
 }
 
-public void showMMUPanel(){
-    mainPanel.add(new MMUApp(this), "MMUApp");
-    cardLayout.show(mainPanel, "MMUApp");
+public void showCourseSelectionPanel(){
+    mainPanel.add(new CourseSelection(this), "CourseSelection");
+    cardLayout.show(mainPanel, "CourseSelection");
 }
 
 public void showFinancialPanel(){

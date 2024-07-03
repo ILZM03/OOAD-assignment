@@ -30,7 +30,7 @@ public class SelectedCourse extends JPanel {
         prevPageButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                home.showMMUPanel();
+                home.showCourseSelectionPanel();
             }
         });
         gbc.weightx = 0.5;

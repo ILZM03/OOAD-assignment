@@ -9,11 +9,11 @@ import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class MMUApp extends JPanel {
+public class CourseSelection extends JPanel {
 
     CardLayout cardLayout;
     
-    public MMUApp(Home home) {
+    public CourseSelection(Home home) {
         
 
         setLayout(new BorderLayout());
@@ -108,7 +108,7 @@ public class MMUApp extends JPanel {
 
             @Override
             public TableCellEditor getCellEditor(int row, int column) {
-                return column == 4 ? new ButtonEditor(new JCheckBox(), courses.get(row), MMUApp.this) : super.getCellEditor(row, column);
+                return column == 4 ? new ButtonEditor(new JCheckBox(), courses.get(row), CourseSelection.this) : super.getCellEditor(row, column);
             }
         };
 

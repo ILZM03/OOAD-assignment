@@ -1,0 +1,4 @@
+D001,Diploma in Information Technology,2 years,1,24500.0
+R001, English remedial course,1 year,1,2000.0
+R001, Mathematics remedial course,1 year,1,2000.0
+U010, Bachelor of Information Technology (Hons.) Security Technology,3 years,2,62250.0
