@@ -1,0 +1,4 @@
+Optional,Fee Fee,300.0
+Mandatory,Test Fee,200.0
+Mandatory,Test Fee2,200.0
+Mandatory,Test Fee3,200.0
