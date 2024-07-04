@@ -83,22 +83,6 @@ public class Invoice extends JPanel {
         invoiceTable.getColumnModel().getColumn(6).setCellRenderer(rightRenderer);
 
 
-        JButton savePdfButton = new JButton("Save as PDF");
-        savePdfButton.setPreferredSize(new Dimension(120, 25));
-        savePdfButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-               try{
-                saveTablePdf(invoiceTable, "invoice.pdf");
-                JOptionPane.showMessageDialog(null, "Invoice saved as PDF", "Success", JOptionPane.INFORMATION_MESSAGE);
-               }catch(Exception ex){
-                  JOptionPane.showMessageDialog(null, "Error saving invoice as PDF", "Error", JOptionPane.ERROR_MESSAGE);
-               }
-            }
-        });
-
-
-        add(savePdfButton, BorderLayout.SOUTH);
         add(invoicePanel, BorderLayout.CENTER);
 
         // Add the ribbon panel to the top
@@ -274,17 +258,5 @@ public class Invoice extends JPanel {
         return total;
     }
 
-    private void saveTablePdf(JTable table, String fileName) throws IOException,PrinterException {
-        PrintService[] printServices = PrintServiceLookup.lookupPrintServices(null, null);
-        if(printServices.length == 0)
-        {
-            throw new PrinterException("No printer found");
-        }  
-        PrintRequestAttributeSet aset = new HashPrintRequestAttributeSet();
-        aset.add(MediaSizeName.ISO_A4); 
-        aset.add(new Destination(new File(fileName).toURI()));
-
-        table.print(JTable.PrintMode.FIT_WIDTH, null, null, false, aset, false);
-    }
 
 }
