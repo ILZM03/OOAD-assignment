@@ -1,3 +1,0 @@
-M001,Matriculation Science,2 years,1,4000.0
-U004, Bachelor of Computer Science (Hons.) in Data Science,3 years,2,62250.0
-P011, Masters of Information Technology (Hons.) Security Technology,5 years,3,82250.0
