@@ -1,0 +1,6 @@
+MMU President's Scholarship, Remedial, MMU, Scholarship
+MMU Merit Scholarship, Matriculation, MMU, Scholarship
+MMU Talent Scholarship, Undergraduate, MMU, Scholarship
+MMU International Student Entrance Scholarship, Postgraduate, MMU, Scholarship
+MMU Siblings Discount, Undergraduate/ Postgraduate, MMU, Discount
+MMU Alumni Discount, Undergraduate/ Postgraduate, MMU, Discount
