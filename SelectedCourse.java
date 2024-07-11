@@ -12,6 +12,12 @@ import java.util.stream.Collectors;
 public class SelectedCourse extends JPanel {
     
     private JTable optionalFeeTable;
+    private JPanel mainPanel;
+    private JPanel selectedPanel;
+    private JPanel mandFeePanel;
+    private JPanel optFeePanel;
+    private JButton saveButton;
+    
     public SelectedCourse(Home home) {
         setLayout(new BorderLayout());
 
@@ -63,7 +69,7 @@ public class SelectedCourse extends JPanel {
         gbc.gridx = 3;
         ribbonPanel.add(nextPageButton, gbc);
 
-        JButton saveButton = new JButton("Save");
+        saveButton = new JButton("Save");
         saveButton.setPreferredSize(new Dimension(120, 25));
         saveButton.addActionListener(new ActionListener() {
             @Override
@@ -77,12 +83,12 @@ public class SelectedCourse extends JPanel {
         ribbonPanel.add(saveButton, gbc);
 
         // Create the main panel 
-        JPanel mainPanel = new JPanel();
+        mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS)); // Vertical layout
 
-        JPanel selectedPanel = createSelectedCoursePanel("Selected Course", getCourses());
-        JPanel mandFeePanel = createFeePanel("Mandatory Fees (RM):", getFeeByLevel("Mandatory"));
-        JPanel optFeePanel = createFeePanel("Optional Fees (RM):", getOptionalFees(getFeeByLevel("Optional")));
+        selectedPanel = createSelectedCoursePanel("Selected Course", getCourses());
+        mandFeePanel = createFeePanel("Mandatory Fees (RM):", getFeeByLevel("Mandatory"));
+        optFeePanel = createFeePanel("Optional Fees (RM):", getOptionalFees(getFeeByLevel("Optional")));
         mainPanel.add(selectedPanel);
         mainPanel.add(mandFeePanel);
         mainPanel.add(optFeePanel);

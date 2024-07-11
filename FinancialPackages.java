@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FinancialPackages extends JPanel {
+    private JTable table;
+    private JLabel label;
+    private Timer timer;
 
     public FinancialPackages(Home home) {
         setLayout(new BorderLayout());
@@ -23,7 +26,7 @@ public class FinancialPackages extends JPanel {
         prevPageButton.addActionListener(e -> home.showMainPanel());
 
         // Add your components here
-        JLabel label = new JLabel("Welcome to Financial Packages");
+        label = new JLabel("Welcome to Financial Packages");
         label.setHorizontalAlignment(SwingConstants.CENTER);
         add(label, BorderLayout.CENTER);
 
@@ -36,7 +39,7 @@ public class FinancialPackages extends JPanel {
         Object[][] data = readTableDataFromFile("database/scholarship.txt");
 
         // Create the table
-        JTable table = new JTable(data, columnNames);
+        table = new JTable(data, columnNames);
         table.getColumnModel().getColumn(0).setPreferredWidth(320); // Course
         table.getColumnModel().getColumn(1).setPreferredWidth(180); // Level
         table.getColumnModel().getColumn(2).setPreferredWidth(120); // Owner
@@ -44,7 +47,7 @@ public class FinancialPackages extends JPanel {
         JScrollPane scrollPane = new JScrollPane(table);
 
         // Timer to switch from JLabel to JTable
-        Timer timer = new Timer(500, e -> {
+        timer = new Timer(500, e -> {
             // Remove the label and add the table
             remove(label);
             add(scrollPane, BorderLayout.CENTER); // Add the table to the center of the panel
