@@ -10,8 +10,10 @@ public class FinancialPackages extends JPanel {
     private JTable table;
     private JLabel label;
     private Timer timer;
+    private HomeFacade homeFacade;
 
     public FinancialPackages(Home home) {
+        this.homeFacade = new HomeFacade(home);
         setLayout(new BorderLayout());
 
         // Create the ribbon panel
@@ -23,7 +25,7 @@ public class FinancialPackages extends JPanel {
         // Create the "Previous Page" button
         JButton prevPageButton = new JButton("Previous Page");
         prevPageButton.setPreferredSize(new Dimension(120, 25));
-        prevPageButton.addActionListener(e -> home.showMainPanel());
+        prevPageButton.addActionListener(e -> homeFacade.showMainPanel());
 
         // Add your components here
         label = new JLabel("Welcome to Financial Packages");

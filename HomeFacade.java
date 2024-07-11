@@ -9,7 +9,7 @@ public class HomeFacade {
         this.home = home;
     }
 
-    public void showHomePanel() {
+    public void showMainPanel() {
         home.showMainPanel();
     }
 

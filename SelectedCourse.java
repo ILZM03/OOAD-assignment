@@ -17,8 +17,10 @@ public class SelectedCourse extends JPanel {
     private JPanel mandFeePanel;
     private JPanel optFeePanel;
     private JButton saveButton;
+    private HomeFacade homeFacade;
     
     public SelectedCourse(Home home) {
+        this.homeFacade = new HomeFacade(home);
         setLayout(new BorderLayout());
 
         // Create the ribbon panel
@@ -36,7 +38,7 @@ public class SelectedCourse extends JPanel {
         prevPageButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                home.showCourseSelectionPanel();
+                homeFacade.showCourseSelectionPanel();
             }
         });
         gbc.weightx = 0.5;
@@ -49,7 +51,7 @@ public class SelectedCourse extends JPanel {
         homePageButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                home.showMainPanel();
+                homeFacade.showMainPanel();
             }
         });
         gbc.weightx = 0.5;
@@ -62,7 +64,7 @@ public class SelectedCourse extends JPanel {
         nextPageButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                home.showInvoicePanel();
+                homeFacade.showInvoicePanel();
             }
         });
         gbc.weightx = 0.5;

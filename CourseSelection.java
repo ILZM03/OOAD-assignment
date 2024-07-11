@@ -10,11 +10,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class CourseSelection extends JPanel {
-
+    private HomeFacade homeFacade;
     CardLayout cardLayout;
     
     public CourseSelection(Home home) {
-        
+        this.homeFacade = new HomeFacade(home);
 
         setLayout(new BorderLayout());
         cardLayout = new CardLayout();
@@ -31,7 +31,7 @@ public class CourseSelection extends JPanel {
         prevPageButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                home.showMainPanel();
+                homeFacade.showMainPanel();
             }
         
         });
@@ -41,7 +41,7 @@ public class CourseSelection extends JPanel {
         nextPageButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                home.showSelectedPanel();
+                homeFacade.showSelectedPanel();
         
             }
         });
