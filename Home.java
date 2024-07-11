@@ -113,5 +113,48 @@ public void showInvoicePanel(){
     mainPanel.add(new Invoice(this), "Invoice");
     cardLayout.show(mainPanel, "Invoice");
 }
+
+// Facade interface
+interface CourseEnrollmentSystem {
+    void showHomePanel();
+    void showCourseSelectionPanel();
+    void showFinancialPanel();
+    void showSelectedPanel();
+    void showInvoicePanel();
+}
+
+// Facade class
+public class HomeFacade implements CourseEnrollmentSystem {
+    private Home home;
+
+    public HomeFacade() {
+        home = new Home();
+    }
+
+    @Override
+    public void showHomePanel() {
+        home.showMainPanel();
+    }
+
+    @Override
+    public void showCourseSelectionPanel() {
+        home.showCourseSelectionPanel();
+    }
+
+    @Override
+    public void showFinancialPanel() {
+        home.showFinancialPanel();
+    }
+
+    @Override
+    public void showSelectedPanel() {
+        home.showSelectedPanel();
+    }
+
+    @Override
+    public void showInvoicePanel() {
+        home.showInvoicePanel();
+    }
+}
     
 }
