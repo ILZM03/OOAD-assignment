@@ -11,6 +11,9 @@ import java.io.*;
 
 public class Invoice extends JPanel {
 
+    private String[] columnNames = { "Code", "Name", "Duration", "Level", "Price", "Discount", "Total" };
+    private List<Object[]> data = getCombinedData();
+
     public Invoice(Home home) {
         setLayout(new BorderLayout());
 
@@ -46,9 +49,6 @@ public class Invoice extends JPanel {
 
         JPanel invoicePanel = new JPanel();
         invoicePanel.setLayout(new BorderLayout());
-
-        String[] columnNames = { "Code", "Name", "Duration", "Level", "Price", "Discount", "Total" };
-        List<Object[]> data = getCombinedData();
 
         DefaultTableModel model = new DefaultTableModel(data.toArray(new Object[0][0]), columnNames) {
             @Override
