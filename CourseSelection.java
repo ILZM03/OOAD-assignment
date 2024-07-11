@@ -20,12 +20,12 @@ public class CourseSelection extends JPanel {
         cardLayout = new CardLayout();
 
 
-        // Create the ribbon panel
+        // create the ribbon panel
         JPanel ribbonPanel = new JPanel(new BorderLayout());
         ribbonPanel.setPreferredSize(new Dimension(800, 20));
         ribbonPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
-        // Create the "Previous Page" button
+        // create the "Previous Page" button
         JButton prevPageButton = new JButton("Previous Page");
         prevPageButton.setPreferredSize(new Dimension(120, 25));
         prevPageButton.addActionListener(new ActionListener() {
@@ -35,7 +35,7 @@ public class CourseSelection extends JPanel {
             }
         
         });
-        // Create the "Next Page" button
+        // create the "Next Page" button
         JButton nextPageButton = new JButton("Next Page");
         nextPageButton.setPreferredSize(new Dimension(120, 25));
         nextPageButton.addActionListener(new ActionListener() {
@@ -51,38 +51,27 @@ public class CourseSelection extends JPanel {
         ribbonPanel.add(nextPageButton, BorderLayout.EAST);
         add(ribbonPanel, BorderLayout.NORTH);
 
-        // Create the main panel with a BoxLayout
+        // create the main panel
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS)); // Vertical layout
 
-        // Create panels for each level
+        // create panels for each level
         mainPanel.add(createLevelPanel("Level 1: Remedial courses, Matriculation", getCoursesByLevel(1)));
         mainPanel.add(createLevelPanel("Level 2: Undergraduate", getCoursesByLevel(2)));
         mainPanel.add(createLevelPanel("Level 3: Postgraduate", getCoursesByLevel(3)));
 
-        // Add vertical glue for spacing
         mainPanel.add(Box.createVerticalGlue());
 
-        // Add the main panel to the frame
         add(mainPanel, BorderLayout.CENTER);
-
         
     }
-
-    // private void clearCacheFile() {
-    //     try (BufferedWriter writer = new BufferedWriter(new FileWriter("database/cache.txt"))) {
-    //         writer.write(""); // Write an empty string to clear the file
-    //     } catch (IOException e) {
-    //         e.printStackTrace();
-    //     }
-    // }
 
     private JPanel createLevelPanel(String levelName, List<Course> courses) {
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBorder(BorderFactory.createTitledBorder(levelName));
-        panel.setPreferredSize(new Dimension(800, 200)); // Fixed size for each panel
+        panel.setPreferredSize(new Dimension(800, 200)); // fixed size for each panel
 
-        // Create a table to display the courses
+        // create a table to display the courses
         String[] columnNames = {"Code", "Name", "Duration", "Price", "Add Course"};
         Object[][] data = new Object[courses.size()][5];
 
@@ -92,13 +81,13 @@ public class CourseSelection extends JPanel {
             data[i][1] = course.getCourseName();
             data[i][2] = course.getCourseDuration();
             data[i][3] = "RM" + course.getCourseFee();
-            data[i][4] = "Add Course"; // Placeholder text for the button
+            data[i][4] = "Add Course";
         }
 
         JTable courseTable = new JTable(new DefaultTableModel(data, columnNames)) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return column == 4; // Only the "Add Course" column is editable
+                return column == 4; 
             }
 
             @Override
@@ -113,21 +102,21 @@ public class CourseSelection extends JPanel {
         };
 
         courseTable.setFillsViewportHeight(true);
-        courseTable.getTableHeader().setReorderingAllowed(false); // Disable column reordering
+        courseTable.getTableHeader().setReorderingAllowed(false);
 
         // Set column widths
-        courseTable.getColumnModel().getColumn(0).setPreferredWidth(100); // Code column
-        courseTable.getColumnModel().getColumn(1).setPreferredWidth(300); // Name column
-        courseTable.getColumnModel().getColumn(2).setPreferredWidth(80); // Duration column
-        courseTable.getColumnModel().getColumn(3).setPreferredWidth(80); // Price column
-        courseTable.getColumnModel().getColumn(4).setPreferredWidth(100); // Add Course column
+        courseTable.getColumnModel().getColumn(0).setPreferredWidth(100); 
+        courseTable.getColumnModel().getColumn(1).setPreferredWidth(300); 
+        courseTable.getColumnModel().getColumn(2).setPreferredWidth(80); 
+        courseTable.getColumnModel().getColumn(3).setPreferredWidth(80); 
+        courseTable.getColumnModel().getColumn(4).setPreferredWidth(100); 
 
-        // Create a scroll pane for the table
+        // create a scroll pane for the table
         JScrollPane scrollPane = new JScrollPane(courseTable);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
-        // Add the scroll pane to the main level panel
+        // add the scroll pane to the main level panel
         panel.add(scrollPane, BorderLayout.CENTER);
 
         return panel;
@@ -136,7 +125,7 @@ public class CourseSelection extends JPanel {
     public void addCourseToCache(Course course) {
         List<Course> cacheCourses = getCoursesFromFile("database/cache.txt");
     
-        // Check for existing course with the same SeniorityLevel
+        // check for existing course with the same SeniorityLevel
         Course existingCourse = null;
         if (course.getSeniorityLevel() != 1) {
             for (Course c : cacheCourses) {
@@ -146,7 +135,7 @@ public class CourseSelection extends JPanel {
                 }
             }
         } else {
-            // For SeniorityLevel 1, allow remedial courses together with foundation, diploma, or matriculation courses
+            // for SeniorityLevel 1, allow remedial courses together with foundation, diploma, or matriculation courses
             if (!course.getCourseCode().startsWith("R")) {
                 for (Course c : cacheCourses) {
                     if (c.getSeniorityLevel() == 1 && !c.getCourseCode().startsWith("R")) {
@@ -157,13 +146,13 @@ public class CourseSelection extends JPanel {
             }
         }
     
-        // Remove the existing course if found
+        // remove the existing course if found
         if (existingCourse != null) {
             cacheCourses.remove(existingCourse);
             System.out.println("Removed: " + existingCourse.getCourseName() + " (Seniority Level: " + existingCourse.getSeniorityLevel() + ")");
         }
     
-        // Add the new course to the cache
+        // add the new course to the cache
         cacheCourses.add(course);
         writeCoursesToFile(cacheCourses, "database/cache.txt");
         System.out.println("Added: " + course.getCourseName() + " (Seniority Level: " + course.getSeniorityLevel() + ")");
