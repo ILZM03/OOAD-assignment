@@ -50,7 +50,6 @@ public class Home extends JFrame implements ActionListener {
         homPanel.setBackground(Color.WHITE);
         mainPanel.add(homPanel, "Home");
         
-        //Register Object
         b1.addActionListener(this);
         b2.addActionListener(this);
 
@@ -59,7 +58,7 @@ public class Home extends JFrame implements ActionListener {
         setSize(800, 620);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
-        setResizable(false); // Make the window non-resizable
+        setResizable(false);
     }
     @Override
     public void actionPerformed(ActionEvent e){
