@@ -75,7 +75,7 @@ public class Home extends JFrame implements ActionListener {
             System.out.println("Invalid Button");
 }
 
-private void clearCacheFile() {
+public void clearCacheFile() {
     try (BufferedWriter writer = new BufferedWriter(new FileWriter("database/cache.txt"))) {
             writer.write(""); // Write an empty string to clear the file
         } catch (IOException e) {
@@ -83,7 +83,7 @@ private void clearCacheFile() {
         }
     }
 
-private void clearFeeCacheFile() {
+public void clearFeeCacheFile() {
     try (BufferedWriter writer = new BufferedWriter(new FileWriter("database/feecache.txt"))) {
             writer.write(""); // Write an empty string to clear the file
         } catch (IOException e) {

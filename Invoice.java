@@ -3,16 +3,11 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.print.PrinterException;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
 import java.io.*;
-import javax.print.*;
-import javax.print.attribute.HashPrintRequestAttributeSet;
-import javax.print.attribute.PrintRequestAttributeSet;
-import javax.print.attribute.standard.Destination;
-import javax.print.attribute.standard.MediaSizeName;
+
 
 public class Invoice extends JPanel {
 
@@ -35,12 +30,14 @@ public class Invoice extends JPanel {
             }
         });
         // Home Page Button
-        JButton homePageButton = new JButton("Home Page");
+        JButton homePageButton = new JButton("Next Student");
         homePageButton.setPreferredSize(new Dimension(120, 25));
         homePageButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                getTotal();
+                // getTotal();
+                home.clearCacheFile();
+                home.clearFeeCacheFile();
                 home.showMainPanel();
             }
         });
